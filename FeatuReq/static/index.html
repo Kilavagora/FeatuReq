@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Feature Requests</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
+    crossorigin="anonymous">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+    crossorigin="anonymous">
+  <link href="/pikaday.css" rel="stylesheet">
+  <style>
+    .navbar {
+      margin-bottom: 0;
+    }
+
+    .jumbotron {
+      padding-top: 6rem;
+      padding-bottom: 6rem;
+      margin-bottom: 0;
+      background-color: #fff;
+    }
+
+    .jumbotron p:last-child {
+      margin-bottom: 0;
+    }
+
+    .jumbotron-heading {
+      font-weight: 300;
+    }
+
+    .jumbotron .container {
+      max-width: 40rem;
+    }
+
+    .hide {
+      display: none;
+    }
+
+    .wrapper {
+      min-height: 25rem;
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+      background-color: #f7f7f7;
+    }
+
+    footer {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
+
+    footer p {
+      margin-bottom: .25rem;
+    }
+
+    .show {
+      display: block;
+    }
+
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+
+    .form-group select {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      height: auto;
+    }
+
+    .form-group select.form-control+.btn-group-vertical>.btn:first-child {
+      border-top-right-radius: .25rem;
+      border-top-left-radius: 0;
+    }
+
+    .form-group select.form-control+.btn-group-vertical>.btn:last-child {
+      border-bottom-right-radius: .25rem;
+      border-bottom-left-radius: 0;
+    }
+
+    #feature-list tbody {
+      counter-reset: line;
+    }
+
+    #feature-list tbody tr {
+      counter-increment: line;
+    }
+
+    #feature-list tbody tr td:first-child::before {
+      content: counter(line);
+      -webkit-user-select: none;
+      user-select: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="navbar navbar-dark bg-dark">
+    <div class="container d-flex justify-content-between">
+      <a href="#" class="navbar-brand">Feature Request</a>
+    </div>
+  </div>
+  <section class="jumbotron text-center">
+    <div class="container">
+      <h1 class="jumbotron-heading">Feature Request App</h1>
+      <p class="lead text-muted">
+        Add a feature request. You can also add missing clients or product areas.
+      </p>
+      <p>
+        <a href="#feature-modal" role="button" id="addButton" class="btn btn-lg btn-success" data-toggle="modal">Add Feature</a>
+      </p>
+    </div>
+  </section>
+  <div class="wrapper text-muted">
+    <div class="container" id="feature-list">
+      <h2 class="text-center">Feature List</h2>
+      <div class="row">
+        <div class="col-md-3 offset-md-9">
+          <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Filter:</span>
+            </div>
+            <input type="text" id="filter" aria-label="filter" name="filter" class="form-control" title="Filter by title, description, client or feature area"
+              data-bind="textInput: filter">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <style scoped="" data-bind="text: filterCSS">
+
+        </style>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Target Date</th>
+              <th>Priority</th>
+              <th>Client Name</th>
+              <th>Feature Area</th>
+              <th>Complete</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tbody data-bind="foreach: sortedFeatures">
+            <tr data-bind="attr: {'data-title': title,
+                                  'data-client': _clientName,
+                                  'data-category': _categoryName}">
+              <td></td>
+              <td data-bind="text: title"></td>
+              <td data-bind="text: description"></td>
+              <td data-bind="text: targetDate().slice(0, 10)"></td>
+              <td data-bind="text: priority"></td>
+              <td data-bind="text: _clientName"></td>
+              <td data-bind="text: _categoryName"></td>
+              <td data-bind="text: complete"></td>
+              <td>
+                <button data-bind="click: _edit" type="button" class="btn btn-secondary btn-sm" title="edit">
+                  <span class="fa fa-pencil-square-o" aria-hidden="true"></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div>
+
+  </div>
+  <footer class="text-muted">
+    <div class="container">
+      <p class="float-right">
+        <a href="#">Back to top</a>
+      </p>
+      <p>&copy; Educatio Inc.</p>
+    </div>
+  </footer>
+
+  <div id="feature-modal" class="modal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Feature</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="feature-form" action="/features/" method="POST" data-default-action="/features/" data-default-method="POST">
+            <div class="form-group">
+              <label class="control-label" for="title">Title</label>
+              <input type="text" id="title" name="title" placeholder="" class="form-control" data-bind="value: title" required>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" for="description">Description</label>
+              <textarea id="description" name="description" class="form-control" data-bind="value: description" required></textarea>
+              <small class="form-text text-muted">A long description of the feature request.</small>
+            </div>
+
+            <div class="form-group">
+
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label" for="client">Client</label>
+              <select size="1" id="client" name="client" pattern="^\d+$" class="form-control col-sm-4" data-bind="options: _clients.clients,
+                                                                                                  value: client,
+                                                                                                  optionsValue: 'id',
+                                                                                                  optionsText: 'name',
+                                                                                                  optionsCaption: 'Select the client...'"
+                required>
+              </select>
+              <div class="btn-group-vertical">
+                <a href="#client-modal" role="button" class="btn btn-secondary btn-sm" data-toggle="modal">
+                  <span class="fa fa-file-o" aria-hidden="true"></span>
+                </a>
+                <button type="button" class="btn btn-secondary btn-sm" title="edit" data-bind="click: _editClient">
+                  <span class="fa fa-pencil-square-o" aria-hidden="true"></span>
+                </button>
+              </div>
+              <label class="col-sm-2 col-form-label" for="priority">Priority</label>
+              <input type="number" min="1" max="10" id="priority" name="priority" placeholder="" class="form-control col-sm-3" data-bind="value: priority"
+                required>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-sm-2 col-form-label" for="category">Feature Area</label>
+              <select size="1" id="category" name="category" pattern="^\d+$" class="form-control col-sm-4" data-bind="options: _categories.categories,
+                                                                                                      value: category,
+                                                                                                      optionsValue: 'id',
+                                                                                                      optionsText: 'name',
+                                                                                                      optionsCaption: 'Select the feature area...'"
+                required>
+              </select>
+              <div class="btn-group-vertical">
+                <a href="#category-modal" role="button" class="btn btn-secondary btn-sm" data-toggle="modal">
+                  <span class="fa fa-file-o" aria-hidden="true"></span>
+                </a>
+                <button type="button" class="btn btn-secondary btn-sm" title="edit" data-bind="click: _editCategory">
+                  <span class="fa fa-pencil-square-o" aria-hidden="true"></span>
+                </button>
+              </div>
+              <label class="col-sm-2 col-form-label" for="targetdate">Target Date</label>
+              <input type="text" id="targetdate" placeholder="YYYY-MM-DD" pattern="^\d{4}-\d{1,2}-\d{1,2}$" class="form-control col-sm-3"
+                data-bind="value: _targetDate" required>
+              <input type="hidden" name="target_date" data-bind="value: target_date">
+            </div>
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" name="complete" class="custom-control-input" id="custom-check">
+              <label class="custom-control-label" for="custom-check">Completed</label>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="save-feature" form="feature-form">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="client-modal" class="modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Client</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <form id="client-form" action="/clients/" method="POST" data-default-action="/clients/" data-default-method="POST">
+              <label for="client-name">Client Name</label>
+              <input type="text" class="form-control" id="client-name" name="name" data-bind="value: name" required pattern="(?!^ +$)^.+$">
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" form="client-form">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="category-modal" class="modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Category</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <form id="category-form" action="/categories/" method="POST" data-default-action="/categories/" data-default-method="POST">
+              <label for="category-name">Product Area</label>
+              <input type="text" class="form-control" id="category-name" name="name" data-bind="value: name" required pattern="(?!^ +$)^.+$">
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" form="category-form">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+  <script src="/modal.js"></script>
+  <script src="/form.js"></script>
+  <script src="/restclient.js"></script>
+  <script>
+    let idClientMap = {};
+    let idCategoryMap = {};
+
+    let reset = function (obj) {
+      for (var prop in obj) {
+        if (obj.hasOwnProperty(prop) && ko.isWritableObservable(obj[prop])) {
+          obj[prop](undefined);
+        }
+      }
+    };
+
+    function Feature() {
+      let self = this;
+      self.id = ko.observable();
+      self.title = ko.observable();
+      self.description = ko.observable();
+      self.priority = ko.observable(1);
+      self.targetDate = ko.observable();
+      self.client = ko.observable();
+      self._clientName = ko.pureComputed(() => {
+        if (self.client() in idClientMap) {
+          return idClientMap[self.client()].name();
+        }
+        return null;
+      });
+      self.category = ko.observable();
+      self._categoryName = ko.pureComputed(() => {
+        if (self.category() in idCategoryMap) {
+          return idCategoryMap[self.category()].name();
+        }
+        return null;
+      });
+      self.complete = ko.observable();
+      self.dateCreated = ko.observable();
+      self.dateModified = ko.observable();
+      self._edit = () => {
+        featureFormModel.title(self.title());
+        featureFormModel.description(self.description());
+        featureFormModel.priority(self.priority());
+        featureFormModel.client(self.client());
+        featureFormModel.category(self.category());
+        featureFormModel.complete(self.complete());
+        featureFormModel._targetDate(self.targetDate().slice(0, 10));
+        featureForm.form.method = "PUT";
+        featureForm.form.action = `/features/${self.id()}`;
+        featureForm.onPut = json => {
+          toModel('Feature', json, self);
+          featureFormModel.reset();
+          featureModal.hide();
+        }
+        featureModal.show();
+      };
+    }
+
+    function Client() {
+      let self = this;
+      self.id = ko.observable();
+      self.name = ko.observable();
+      self.dateCreated = ko.observable();
+      self.dateModified = ko.observable();
+      self._edit = () => {
+        clientFormModel.name(self.name());
+        clientForm.form.method = "PUT";
+        clientForm.form.action = `/clients/${self.id()}`;
+        clientForm.onPut = json => {
+          toModel('Client', json, self);
+          clientFormModel.reset();
+          clientModal.hide();
+        }
+        clientModal.show();
+      };
+    }
+
+    function Category() {
+      let self = this;
+      self.id = ko.observable();
+      self.name = ko.observable();
+      self.dateCreated = ko.observable();
+      self.dateModified = ko.observable();
+      self._edit = () => {
+        categoryFormModel.name(self.name());
+        categoryForm.form.method = "PUT";
+        categoryForm.form.action = `/categories/${self.id()}`;
+        categoryForm.onPut = json => {
+          toModel('Category', json, self);
+          categoryFormModel.reset();
+          categoryModal.hide();
+        }
+        categoryModal.show();
+      };
+    }
+
+    function FeatureFormModel() {
+      let self = this;
+      self.title = ko.observable();
+      self.description = ko.observable();
+
+      self.priority = ko.observable();
+
+      self._targetDate = ko.observable();
+
+      self.target_date = ko.pureComputed(() => {
+        let date = new Date(self._targetDate());
+        if (isNaN(date.getTime())) {
+          return null;
+        }
+        return date.toISOString();
+      });
+
+      self.client = ko.observable();
+      self.category = ko.observable();
+      self.complete = ko.observable();
+
+      self._editClient = () => {
+        if (self.client() in idClientMap) {
+          idClientMap[self.client()]._edit();
+        }
+      };
+
+      self._editCategory = () => {
+        if (self.category() in idCategoryMap) {
+          idCategoryMap[self.category()]._edit();
+        }
+      };
+
+    }
+
+    function ClientFormModel() {
+      this.name = ko.observable();
+    }
+
+    function CategoryFormModel() {
+      this.name = ko.observable();
+    }
+
+    FeatureFormModel.prototype.reset = function () {
+      reset(this);
+    };
+
+    ClientFormModel.prototype.reset = function () {
+      reset(this);
+    }
+
+    CategoryFormModel.prototype.reset = function () {
+      reset(this);
+    }
+
+    function FeatureList() {
+      let self = this;
+      self.features = ko.observableArray();
+      self.sortedFeatures = ko.pureComputed(() => {
+        return self.features().sort((left, right) => {
+          let diff = left.client() - right.client();
+          if (diff != 0)
+            return diff;
+          diff = right.priority() - left.priority();
+          if (diff != 0)
+            return diff;
+          return (new Date(right.dateCreated())) - (new Date(left.dateCreated()));
+        });
+      });
+      self.filter = ko.observable();
+      self.filterCSS = ko.pureComputed(() => {
+        let filter = self.filter();
+        if (filter) {
+          return `tbody tr{display:none}
+                  tbody tr[data-title*="${filter}" i],tbody tr[data-client*="${filter}" i],tbody tr[data-category*="${filter}" i]{display:table-row}`;
+        }
+        return '';
+      });
+    }
+
+    function ClientList() {
+      this.clients = ko.observableArray();
+    }
+
+    function CategoryList() {
+      this.categories = ko.observableArray();
+    }
+
+    function toModel(modelName, item, existingModel) {
+      let Model = eval(modelName);
+      let model = existingModel || new Model();
+      for (let key in item) {
+        let val = item[key];
+        let cammelKey = key.replace(/_([a-z])/g, m => m[1].toUpperCase());
+        model[cammelKey](val);
+      }
+      return model;
+    }
+
+    function createFeatureModel(item) {
+      let feature = toModel('Feature', item);
+      featureList.features.push(feature);
+    }
+
+    function createClientModel(item) {
+      let client = toModel('Client', item);
+      clientList.clients.push(client);
+      idClientMap[item.id] = client;
+    }
+
+    function createCategoryModel(item) {
+      let category = toModel('Category', item);
+      categoryList.categories.push(category);
+      idCategoryMap[item.id] = category;
+    }
+  </script>
+  <script>
+    let featureForm = new Form("feature-form");
+    let clientForm = new Form("client-form");
+    let categoryForm = new Form("category-form");
+
+    let featureModal = new Modal("feature-modal");
+    let clientModal = new Modal("client-modal");
+    let categoryModal = new Modal("category-modal");
+
+    let featureList = new FeatureList();
+    let clientList = new ClientList();
+    let categoryList = new CategoryList();
+
+    let featureFormModel = new FeatureFormModel();
+    let clientFormModel = new ClientFormModel();
+    let categoryFormModel = new CategoryFormModel();
+
+    featureFormModel._clients = clientList;
+    featureFormModel._categories = categoryList;
+
+    ko.applyBindings(featureFormModel, document.getElementById("feature-modal"));
+    ko.applyBindings(clientFormModel, document.getElementById("client-modal"));
+    ko.applyBindings(categoryFormModel, document.getElementById("category-modal"));
+
+    ko.applyBindings(featureList, document.getElementById("feature-list"));
+
+    featureForm.onPost = json => {
+      createFeatureModel(json);
+      featureFormModel.reset();
+      featureModal.hide();
+    };
+
+    clientForm.onPost = json => {
+      createClientModel(json);
+      clientModal.hide();
+    };
+
+    categoryForm.onPost = json => {
+      createCategoryModel(json);
+      categoryModal.hide();
+    };
+
+    featureModal.onHide = () => {
+      featureForm.reset();
+      featureFormModel.reset();
+    };
+
+    clientModal.onHide = () => {
+      clientForm.reset();
+      clientFormModel.reset();
+    };
+
+    categoryModal.onHide = () => {
+      categoryForm.reset();
+      categoryFormModel.reset();
+    };
+  </script>
+  <script>
+    let features = new RestClient("features");
+    let clients = new RestClient("clients");
+    let categories = new RestClient("categories");
+
+    features.getAll()
+      .then(json => {
+        for (let item of json) {
+          createFeatureModel(item);
+        }
+      });
+
+    clients.getAll()
+      .then(json => {
+        for (let item of json) {
+          createClientModel(item);
+        }
+        for (let feature of featureList.features()) {
+          feature.client.valueHasMutated();
+        }
+      });
+
+    categories.getAll()
+      .then(json => {
+        for (let item of json) {
+          createCategoryModel(item);
+        }
+        for (let feature of featureList.features()) {
+          feature.category.valueHasMutated();
+        }
+      });
+  </script>
+  <script src="/pikaday.js"></script>
+  <script>
+    var picker = new Pikaday({
+      field: document.getElementById('targetdate'),
+      minDate: new Date(),
+      format: 'YYYY-MM-DD',
+      toString(date, format) {
+        const day = (date.getDate() + "").padStart(2, "0");
+        const month = (date.getMonth() + 1 + "").padStart(2, "0");
+        const year = date.getFullYear();
+        return `${year}-${month}-${day}`;
+      },
+      parse(dateString, format) {
+        const parts = dateString.split('-');
+        const day = parts[2] | 0;
+        const month = (parts[1] | 0) - 1;
+        const year = parts[0] | 0;
+        return new Date(year, month, day);
+      }
+    });
+  </script>
+</body>
+
+</html>

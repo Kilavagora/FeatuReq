@@ -1,0 +1,26 @@
+{
+  "name": "FeatuReq",
+  "description": "A simple flask feature request demo app",
+  "repository": "https://github.com/kilavagora/featureq",
+  "logo": "https://rawgit.com/kilavagora/featureq/master/logo.png",
+  "keywords": [
+    "flask",
+    "postgres",
+    "restful",
+    "demo",
+    "feature requests"
+  ],
+  "env": {
+    "FLASK_APP": {
+      "description": "Env to run the Flask cli commands.",
+      "value": "FeatuReq/run.py"
+    }
+  },
+  "addons": [{
+    "plan": "heroku-postgresql:hobby-dev",
+    "as": "DATABASE"
+  }],
+  "scripts": {
+    "postdeploy": "python -m flask dbcreate"
+  }
+}
