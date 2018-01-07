@@ -14,6 +14,10 @@
     "FLASK_APP": {
       "description": "Env to run the Flask cli commands.",
       "value": "FeatuReq/run.py"
+    },
+    "APP_SETTINGS": {
+      "description": "Env to set app setting.",
+      "value": "development"
     }
   },
   "addons": [{
