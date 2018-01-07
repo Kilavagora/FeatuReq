@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath FeatureReq run:app
+web: gunicorn --pythonpath FeatuReq run:app
