@@ -62,16 +62,50 @@ class Form {
       reject("One or more field values are invalid!");
     });
   }
-  JSON() {
+  setter(name, value) {
+    let element = this.form.querySelector(`[name="${name}"]`);
+    if (element.type == 'checkbox' || element.type == 'radio') {
+      element.checked = value;
+    } else {
+      this.form.querySelector(`[name="${name}"]`).value = value;
+    }
+  }
+  getter(name) {
+    let element = this.form.querySelector(`[name="${name}"]`);
+    return (element.type == 'checkbox' || element.type == 'radio') ? element.checked : element.value;
+  }
+  fromObj(obj) {
+    for (let element of this.form.elements) {
+      let name = element.getAttribute("name");
+      if (!name) {
+        continue;
+      }
+      if (!(name in obj)) {
+        continue;
+      }
+      let value = obj[name];
+      if (element.type == 'checkbox' || element.type == 'radio') {
+        element.checked = value;
+      } else {
+        this.form.querySelector(`[name="${name}"]`).value = value;
+      }
+    }
+  }
+  fromJSON(json){
+    this.fromObj(JSON.parse(json));
+  }
+  obj() {
     let out = {};
-    let self = this;
-    for (let element of self.form.elements) {
+    for (let element of this.form.elements) {
       let name = element.getAttribute("name");
       if (name) {
         out[name] = (element.type == 'checkbox' || element.type == 'radio') ? element.checked : element.value;
       }
     }
-    return JSON.stringify(out);
+    return out;
+  }
+  JSON() {
+    return JSON.stringify(this.obj());
   }
 }
 

@@ -112,7 +112,8 @@
         Add a feature request. You can also add missing clients or product areas.
       </p>
       <p>
-        <a href="#feature-modal" role="button" id="addButton" class="btn btn-lg btn-success" data-toggle="modal">Add Feature</a>
+        <a href="#feature-modal" role="button" id="addButton" class="btn btn-lg btn-success" data-toggle="modal">Add
+          Feature</a>
       </p>
     </div>
   </section>
@@ -125,13 +126,12 @@
             <div class="input-group-prepend">
               <span class="input-group-text">Filter:</span>
             </div>
-            <input type="text" id="filter" aria-label="filter" name="filter" class="form-control" title="Filter by title, description, client or feature area"
-              data-bind="textInput: filter">
+            <input type="text" id="filter" aria-label="filter" name="filter" class="form-control" title="Filter by title, description, client or feature area">
           </div>
         </div>
       </div>
       <div class="row">
-        <style scoped="" data-bind="text: filterCSS">
+        <style scoped="" id="filter-css">
 
         </style>
         <table class="table table-hover">
@@ -148,24 +148,7 @@
               <th>Edit</th>
             </tr>
           </thead>
-          <tbody data-bind="foreach: sortedFeatures">
-            <tr data-bind="attr: {'data-title': title,
-                                  'data-client': _clientName,
-                                  'data-category': _categoryName}">
-              <td></td>
-              <td data-bind="text: title"></td>
-              <td data-bind="text: description"></td>
-              <td data-bind="text: targetDate().slice(0, 10)"></td>
-              <td data-bind="text: priority"></td>
-              <td data-bind="text: _clientName"></td>
-              <td data-bind="text: _categoryName"></td>
-              <td data-bind="text: complete"></td>
-              <td>
-                <button data-bind="click: _edit" type="button" class="btn btn-secondary btn-sm" title="edit">
-                  <span class="fa fa-pencil-square-o" aria-hidden="true"></span>
-                </button>
-              </td>
-            </tr>
+          <tbody id="feature-list-tbody">
           </tbody>
         </table>
       </div>
@@ -193,15 +176,16 @@
           </button>
         </div>
         <div class="modal-body">
-          <form id="feature-form" action="/features/" method="POST" data-default-action="/features/" data-default-method="POST">
+          <form id="feature-form" action="/features/" method="POST" data-default-action="/features/"
+            data-default-method="POST">
             <div class="form-group">
               <label class="control-label" for="title">Title</label>
-              <input type="text" id="title" name="title" placeholder="" class="form-control" data-bind="value: title" required>
+              <input type="text" id="title" name="title" placeholder="" class="form-control" required>
             </div>
 
             <div class="form-group">
               <label class="control-label" for="description">Description</label>
-              <textarea id="description" name="description" class="form-control" data-bind="value: description" required></textarea>
+              <textarea id="description" name="description" class="form-control" required></textarea>
               <small class="form-text text-muted">A long description of the feature request.</small>
             </div>
 
@@ -211,47 +195,36 @@
 
             <div class="form-group row">
               <label class="col-sm-2 col-form-label" for="client">Client</label>
-              <select size="1" id="client" name="client" pattern="^\d+$" class="form-control col-sm-4" data-bind="options: _clients.clients,
-                                                                                                  value: client,
-                                                                                                  optionsValue: 'id',
-                                                                                                  optionsText: 'name',
-                                                                                                  optionsCaption: 'Select the client...'"
-                required>
+              <select size="1" id="client" name="client" pattern="^\d+$" class="form-control col-sm-4" required>
               </select>
               <div class="btn-group-vertical">
                 <a href="#client-modal" role="button" class="btn btn-secondary btn-sm" data-toggle="modal">
                   <span class="fa fa-file-o" aria-hidden="true"></span>
                 </a>
-                <button type="button" class="btn btn-secondary btn-sm" title="edit" data-bind="click: _editClient">
+                <button id="edit-client" type="button" class="btn btn-secondary btn-sm" title="edit">
                   <span class="fa fa-pencil-square-o" aria-hidden="true"></span>
                 </button>
               </div>
               <label class="col-sm-2 col-form-label" for="priority">Priority</label>
-              <input type="number" min="1" max="10" id="priority" name="priority" placeholder="" class="form-control col-sm-3" data-bind="value: priority"
+              <input type="number" min="1" max="10" id="priority" name="priority" placeholder="" class="form-control col-sm-3"
                 required>
             </div>
 
             <div class="form-group row">
               <label class="col-sm-2 col-form-label" for="category">Feature Area</label>
-              <select size="1" id="category" name="category" pattern="^\d+$" class="form-control col-sm-4" data-bind="options: _categories.categories,
-                                                                                                      value: category,
-                                                                                                      optionsValue: 'id',
-                                                                                                      optionsText: 'name',
-                                                                                                      optionsCaption: 'Select the feature area...'"
-                required>
+              <select size="1" id="category" name="category" pattern="^\d+$" class="form-control col-sm-4" required>
               </select>
               <div class="btn-group-vertical">
                 <a href="#category-modal" role="button" class="btn btn-secondary btn-sm" data-toggle="modal">
                   <span class="fa fa-file-o" aria-hidden="true"></span>
                 </a>
-                <button type="button" class="btn btn-secondary btn-sm" title="edit" data-bind="click: _editCategory">
+                <button id="edit-category" type="button" class="btn btn-secondary btn-sm" title="edit">
                   <span class="fa fa-pencil-square-o" aria-hidden="true"></span>
                 </button>
               </div>
               <label class="col-sm-2 col-form-label" for="targetdate">Target Date</label>
-              <input type="text" id="targetdate" placeholder="YYYY-MM-DD" pattern="^\d{4}-\d{1,2}-\d{1,2}$" class="form-control col-sm-3"
-                data-bind="value: _targetDate" required>
-              <input type="hidden" name="target_date" data-bind="value: target_date">
+              <input type="text" id="target_date" name="target_date" placeholder="YYYY-MM-DD" pattern="^\d{4}-\d{1,2}-\d{1,2}$"
+                class="form-control col-sm-3" required>
             </div>
             <div class="custom-control custom-checkbox">
               <input type="checkbox" name="complete" class="custom-control-input" id="custom-check">
@@ -280,7 +253,7 @@
           <div class="form-group">
             <form id="client-form" action="/clients/" method="POST" data-default-action="/clients/" data-default-method="POST">
               <label for="client-name">Client Name</label>
-              <input type="text" class="form-control" id="client-name" name="name" data-bind="value: name" required pattern="(?!^ +$)^.+$">
+              <input type="text" class="form-control" id="client-name" name="name" required pattern="(?!^ +$)^.+$">
             </form>
           </div>
         </div>
@@ -303,9 +276,10 @@
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <form id="category-form" action="/categories/" method="POST" data-default-action="/categories/" data-default-method="POST">
+            <form id="category-form" action="/categories/" method="POST" data-default-action="/categories/"
+              data-default-method="POST">
               <label for="category-name">Product Area</label>
-              <input type="text" class="form-control" id="category-name" name="name" data-bind="value: name" required pattern="(?!^ +$)^.+$">
+              <input type="text" class="form-control" id="category-name" name="name" required pattern="(?!^ +$)^.+$">
             </form>
           </div>
         </div>
@@ -317,219 +291,9 @@
     </div>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
   <script src="/modal.js"></script>
   <script src="/form.js"></script>
   <script src="/restclient.js"></script>
-  <script>
-    let idClientMap = {};
-    let idCategoryMap = {};
-
-    let reset = function (obj) {
-      for (var prop in obj) {
-        if (obj.hasOwnProperty(prop) && ko.isWritableObservable(obj[prop])) {
-          obj[prop](undefined);
-        }
-      }
-    };
-
-    function Feature() {
-      let self = this;
-      self.id = ko.observable();
-      self.title = ko.observable();
-      self.description = ko.observable();
-      self.priority = ko.observable(1);
-      self.targetDate = ko.observable();
-      self.client = ko.observable();
-      self._clientName = ko.pureComputed(() => {
-        if (self.client() in idClientMap) {
-          return idClientMap[self.client()].name();
-        }
-        return null;
-      });
-      self.category = ko.observable();
-      self._categoryName = ko.pureComputed(() => {
-        if (self.category() in idCategoryMap) {
-          return idCategoryMap[self.category()].name();
-        }
-        return null;
-      });
-      self.complete = ko.observable();
-      self.dateCreated = ko.observable();
-      self.dateModified = ko.observable();
-      self._edit = () => {
-        featureFormModel.title(self.title());
-        featureFormModel.description(self.description());
-        featureFormModel.priority(self.priority());
-        featureFormModel.client(self.client());
-        featureFormModel.category(self.category());
-        featureFormModel.complete(self.complete());
-        featureFormModel._targetDate(self.targetDate().slice(0, 10));
-        featureForm.form.method = "PUT";
-        featureForm.form.action = `/features/${self.id()}`;
-        featureForm.onPut = json => {
-          toModel('Feature', json, self);
-          featureFormModel.reset();
-          featureModal.hide();
-        }
-        featureModal.show();
-      };
-    }
-
-    function Client() {
-      let self = this;
-      self.id = ko.observable();
-      self.name = ko.observable();
-      self.dateCreated = ko.observable();
-      self.dateModified = ko.observable();
-      self._edit = () => {
-        clientFormModel.name(self.name());
-        clientForm.form.method = "PUT";
-        clientForm.form.action = `/clients/${self.id()}`;
-        clientForm.onPut = json => {
-          toModel('Client', json, self);
-          clientFormModel.reset();
-          clientModal.hide();
-        }
-        clientModal.show();
-      };
-    }
-
-    function Category() {
-      let self = this;
-      self.id = ko.observable();
-      self.name = ko.observable();
-      self.dateCreated = ko.observable();
-      self.dateModified = ko.observable();
-      self._edit = () => {
-        categoryFormModel.name(self.name());
-        categoryForm.form.method = "PUT";
-        categoryForm.form.action = `/categories/${self.id()}`;
-        categoryForm.onPut = json => {
-          toModel('Category', json, self);
-          categoryFormModel.reset();
-          categoryModal.hide();
-        }
-        categoryModal.show();
-      };
-    }
-
-    function FeatureFormModel() {
-      let self = this;
-      self.title = ko.observable();
-      self.description = ko.observable();
-
-      self.priority = ko.observable();
-
-      self._targetDate = ko.observable();
-
-      self.target_date = ko.pureComputed(() => {
-        let date = new Date(self._targetDate());
-        if (isNaN(date.getTime())) {
-          return null;
-        }
-        return date.toISOString();
-      });
-
-      self.client = ko.observable();
-      self.category = ko.observable();
-      self.complete = ko.observable();
-
-      self._editClient = () => {
-        if (self.client() in idClientMap) {
-          idClientMap[self.client()]._edit();
-        }
-      };
-
-      self._editCategory = () => {
-        if (self.category() in idCategoryMap) {
-          idCategoryMap[self.category()]._edit();
-        }
-      };
-
-    }
-
-    function ClientFormModel() {
-      this.name = ko.observable();
-    }
-
-    function CategoryFormModel() {
-      this.name = ko.observable();
-    }
-
-    FeatureFormModel.prototype.reset = function () {
-      reset(this);
-    };
-
-    ClientFormModel.prototype.reset = function () {
-      reset(this);
-    }
-
-    CategoryFormModel.prototype.reset = function () {
-      reset(this);
-    }
-
-    function FeatureList() {
-      let self = this;
-      self.features = ko.observableArray();
-      self.sortedFeatures = ko.pureComputed(() => {
-        return self.features().sort((left, right) => {
-          let diff = left.client() - right.client();
-          if (diff != 0)
-            return diff;
-          diff = right.priority() - left.priority();
-          if (diff != 0)
-            return diff;
-          return (new Date(right.dateCreated())) - (new Date(left.dateCreated()));
-        });
-      });
-      self.filter = ko.observable();
-      self.filterCSS = ko.pureComputed(() => {
-        let filter = self.filter();
-        if (filter) {
-          return `tbody tr{display:none}
-                  tbody tr[data-title*="${filter}" i],tbody tr[data-client*="${filter}" i],tbody tr[data-category*="${filter}" i]{display:table-row}`;
-        }
-        return '';
-      });
-    }
-
-    function ClientList() {
-      this.clients = ko.observableArray();
-    }
-
-    function CategoryList() {
-      this.categories = ko.observableArray();
-    }
-
-    function toModel(modelName, item, existingModel) {
-      let Model = eval(modelName);
-      let model = existingModel || new Model();
-      for (let key in item) {
-        let val = item[key];
-        let cammelKey = key.replace(/_([a-z])/g, m => m[1].toUpperCase());
-        model[cammelKey](val);
-      }
-      return model;
-    }
-
-    function createFeatureModel(item) {
-      let feature = toModel('Feature', item);
-      featureList.features.push(feature);
-    }
-
-    function createClientModel(item) {
-      let client = toModel('Client', item);
-      clientList.clients.push(client);
-      idClientMap[item.id] = client;
-    }
-
-    function createCategoryModel(item) {
-      let category = toModel('Category', item);
-      categoryList.categories.push(category);
-      idCategoryMap[item.id] = category;
-    }
-  </script>
   <script>
     let featureForm = new Form("feature-form");
     let clientForm = new Form("client-form");
@@ -538,91 +302,249 @@
     let featureModal = new Modal("feature-modal");
     let clientModal = new Modal("client-modal");
     let categoryModal = new Modal("category-modal");
-
-    let featureList = new FeatureList();
-    let clientList = new ClientList();
-    let categoryList = new CategoryList();
-
-    let featureFormModel = new FeatureFormModel();
-    let clientFormModel = new ClientFormModel();
-    let categoryFormModel = new CategoryFormModel();
-
-    featureFormModel._clients = clientList;
-    featureFormModel._categories = categoryList;
-
-    ko.applyBindings(featureFormModel, document.getElementById("feature-modal"));
-    ko.applyBindings(clientFormModel, document.getElementById("client-modal"));
-    ko.applyBindings(categoryFormModel, document.getElementById("category-modal"));
-
-    ko.applyBindings(featureList, document.getElementById("feature-list"));
-
-    featureForm.onPost = json => {
-      createFeatureModel(json);
-      featureFormModel.reset();
-      featureModal.hide();
+  </script>
+  <script>
+    let featureTemplate = featureModel => {
+      let tr = document.createElement('tr');
+      tr.dataset.id = featureModel.id;
+      tr.dataset.title = featureModel.title;
+      let clientName = clientIdNameMap[featureModel.client] || '';
+      let categoryName =  categoryIdNameMap[featureModel.category] || '';
+      tr.dataset.categoryId = featureModel.category;
+      tr.dataset.clientId = featureModel.client;
+      tr.dataset.category = clientName;
+      tr.dataset.client = categoryName;
+      tr.dataset.dateCreated = featureModel.date_created;
+      tr.dataset.priority = featureModel.priority;
+      tr.innerHTML =
+        `<td></td>
+        <td>${featureModel.title}</td>
+        <td>${featureModel.description}</td>
+        <td>${featureModel.target_date.slice(0, 10)}</td>
+        <td>${featureModel.priority}</td>
+        <td data-client-id="${featureModel.client}">${clientName}</td>
+        <td data-category-id="${featureModel.category}">${categoryName}</td>
+        <td>${featureModel.complete}</td>
+        <td>
+          <button data-id="${featureModel.id}" type="button" class="btn btn-secondary btn-sm" title="edit">
+            <span class="fa fa-pencil-square-o" aria-hidden="true"></span>
+          </button>
+          <button data-id="${featureModel.id}" type="button" class="btn btn-danger btn-sm" title="delete">
+            <span class="fa fa-trash-o" aria-hidden="true"></span>
+          </button>
+        </td>`;
+      return tr;
+    }
+    let optionTemplate = optionModel => {
+      let option = document.createElement("option");
+      option.value = optionModel.id;
+      option.textContent = optionModel.name;
+      return option;
+    }
+    const featureSorter = (left, right) => {
+      let diff = left.dataset.clientId - right.dataset.clientId;
+      if (diff != 0)
+        return diff;
+      diff = right.dataset.priority - left.dataset.priority;
+      if (diff != 0)
+        return diff;
+      return (new Date(right.dataset.dateCreated) - (new Date(left.dataset.dateCreated)));
     };
+  </script>
+  <script>
+    let filterCSS = document.getElementById("filter-css");
 
-    clientForm.onPost = json => {
-      createClientModel(json);
-      clientModal.hide();
-    };
-
-    categoryForm.onPost = json => {
-      createCategoryModel(json);
-      categoryModal.hide();
-    };
-
-    featureModal.onHide = () => {
-      featureForm.reset();
-      featureFormModel.reset();
-    };
-
-    clientModal.onHide = () => {
-      clientForm.reset();
-      clientFormModel.reset();
-    };
-
-    categoryModal.onHide = () => {
-      categoryForm.reset();
-      categoryFormModel.reset();
-    };
+    function applyFilter(filter) {
+      filterCSS.textContent = filter ?
+        `tbody tr{display:none}
+      tbody tr[data-title*="${filter}" i],tbody tr[data-client*="${filter}" i],tbody tr[data-category*="${filter}" i]{display:table-row}` :
+        '';
+    }
+    let inputFilter = document.getElementById("filter");
+    inputFilter.addEventListener("input", () => {
+      applyFilter(inputFilter.value);
+    });
+    applyFilter(inputFilter.value);
   </script>
   <script>
     let features = new RestClient("features");
     let clients = new RestClient("clients");
     let categories = new RestClient("categories");
+    let clientIdNameMap = {};
+    let categoryIdNameMap = {};
+
+    let featureListTbody = document.getElementById("feature-list-tbody");
+
+    function sortFeatures() {
+      [...featureListTbody.children].sort(featureSorter).map(node => featureListTbody.appendChild(node));
+    }
+
+    featureForm.onPost = json => {
+      let template = featureTemplate(json);
+      featureListTbody.appendChild(template);
+      sortFeatures();
+      featureModal.hide();
+    };
+
+    clientForm.onPost = json => {
+      clientIdNameMap[json.id] = json.name;
+      let template = optionTemplate(json);
+      clientSelect.appendChild(template);
+      clientModal.hide();
+    };
+
+    categoryForm.onPost = json => {
+      categoryIdNameMap[json.id] = json.name;
+      let template = optionTemplate(json);
+      categorySelect.appendChild(template);
+      categoryModal.hide();
+    };
 
     features.getAll()
       .then(json => {
         for (let item of json) {
-          createFeatureModel(item);
+          let template = featureTemplate(item);
+          featureListTbody.appendChild(template);
         }
       });
+
+    let deleteHandler = e => {
+      let button = e.target.closest('button[title="delete"]');
+      if (!button) {
+        return;
+      }
+      let yes = confirm("Are you sure you want to delete the item?");
+      if (yes) {
+        let tr = e.target.closest('tr');
+        let itemId = button.dataset.id;
+        features.delete(itemId).then(json => {
+          tr.remove();
+        });
+      }
+    }
+    let editHandler = e => {
+      let button = e.target.closest('button[title="edit"]');
+      if (!button) {
+        return;
+      }
+      let tr = e.target.closest('tr');
+      let itemId = button.dataset.id;
+      features.get(itemId).then(feature => {
+        featureForm.fromObj(feature);
+        let target_date = value => {
+          let date = new Date(value);
+          if (!isNaN(date.getTime())) {
+            return `${date.getFullYear()}-${(date.getMonth()+1)}-${date.getDate()}`;
+          }
+        }
+        featureForm.setter("target_date", target_date(feature.target_date))
+        featureForm.form.method = "PUT";
+        featureForm.form.action = `/features/${itemId}`;
+        featureForm.onPut = json => {
+          let newTr = featureTemplate(json);
+          tr.replaceWith(newTr);
+          sortFeatures();
+          featureModal.hide();
+        }
+        featureModal.show();
+      });
+
+    };
+
+    let editCategoryButton = document.getElementById("edit-category");
+    let editClientButton = document.getElementById("edit-client");
+
+    editCategoryButton.addEventListener("click", e => {
+      let option = categorySelect.options[categorySelect.selectedIndex];
+      let categoryId = option.value;
+      categories.get(categoryId).then(category =>{
+        categoryForm.fromObj(category);
+        categoryForm.form.method = "PUT";
+        categoryForm.form.action = `/categories/${categoryId}`;
+        categoryForm.onPut = json =>{
+          let newOption = optionTemplate(json);
+          categoryIdNameMap[json.id] = json.name;
+          option.replaceWith(newOption);
+          newOption.selected = true;
+          populatePlacholders(categoryIdNameMap, 'category');
+          categoryModal.hide();
+        };
+        categoryModal.show();
+      });
+    });
+
+    editClientButton.addEventListener("click", e => {
+      let option = clientSelect.options[clientSelect.selectedIndex];
+      let clientId = option.value;
+      clients.get(clientId).then(client =>{
+        clientForm.fromObj(client);
+        clientForm.form.method = "PUT";
+        clientForm.form.action = `/clients/${clientId}`;
+        clientForm.onPut = json =>{
+          let newOption = optionTemplate(json);
+          clientIdNameMap[json.id] = json.name;
+          option.replaceWith(newOption);
+          newOption.selected = true;
+          populatePlacholders(clientIdNameMap, 'client');
+          clientModal.hide();
+        };
+        clientModal.show();
+      });
+    });
+
+    featureListTbody.addEventListener("click", editHandler);
+    featureListTbody.addEventListener("click", deleteHandler);
+
+    let clientSelect = document.getElementById("client");
+    let categorySelect = document.getElementById("category");
+
+    function populatePlacholders(idNameMap, name) {
+      let placeholders = document.querySelectorAll(`[data-${name}-id]`);
+      for (let placeholder of placeholders) {
+        if (placeholder.hasAttribute(`data-${name}`)) {
+          placeholder.dataset[`${name}`] = idNameMap[placeholder.dataset[`${name}Id`] | 0];
+        } else {
+          placeholder.textContent = idNameMap[placeholder.dataset[`${name}Id`] | 0];
+        }
+      }
+    }
 
     clients.getAll()
       .then(json => {
         for (let item of json) {
-          createClientModel(item);
+          let option = optionTemplate(item);
+          clientSelect.appendChild(option);
+          clientIdNameMap[item.id] = item.name;
         }
-        for (let feature of featureList.features()) {
-          feature.client.valueHasMutated();
-        }
+        populatePlacholders(clientIdNameMap, 'client');
       });
 
     categories.getAll()
       .then(json => {
         for (let item of json) {
-          createCategoryModel(item);
+          let option = optionTemplate(item);
+          categorySelect.appendChild(option);
+          categoryIdNameMap[item.id] = item.name;
         }
-        for (let feature of featureList.features()) {
-          feature.category.valueHasMutated();
-        }
+        populatePlacholders(categoryIdNameMap, "category");
       });
+
+    featureModal.onHide = () => {
+      featureForm.reset();
+    };
+
+    clientModal.onHide = () => {
+      clientForm.reset();
+    };
+
+    categoryModal.onHide = () => {
+      categoryForm.reset();
+    };
   </script>
   <script src="/pikaday.js"></script>
   <script>
     var picker = new Pikaday({
-      field: document.getElementById('targetdate'),
+      field: document.getElementById('target_date'),
       minDate: new Date(),
       format: 'YYYY-MM-DD',
       toString(date, format) {

@@ -1,6 +1,6 @@
 Feature Requests
 ================
-A simple feature requests tracking application built using [Flask](http://flask.pocoo.org/)/[PostgreSQL](https://www.postgresql.org/), [Knockout](http://knockoutjs.com/), [ES6](https://www.ecma-international.org/ecma-262/6.0/index.html), [Bootstrap](https://getbootstrap.com/), some CSS4 and a lot of fun.
+A simple feature requests tracking application built using [Flask](http://flask.pocoo.org/)/[PostgreSQL](https://www.postgresql.org/), [ES6](https://www.ecma-international.org/ecma-262/6.0/index.html), [Bootstrap](https://getbootstrap.com/), some CSS4 and a lot of fun.
 
 Getting Started
 ===============
